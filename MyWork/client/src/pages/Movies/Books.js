@@ -7,28 +7,28 @@ import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { Input, TextArea, FormBtn } from "../../components/Form";
 
-class Movies extends Component {
+class Books extends Component {
   state = {
-    Movies: [],
+    books: [],
     title: "",
     synopsis: ""
   };
 
   componentDidMount() {
-    this.loadMovies();
+    this.loadBooks();
   }
 
-  loadMovies = () => {
-    API.getMovies()
+  loadBooks = () => {
+    API.getBooks()
       .then(res =>
-        this.setState({ Movies: res.data, title: "", synopsis: "" })
+        this.setState({ books: res.data, title: "", author: "", synopsis: "" })
       )
       .catch(err => console.log(err));
   };
 
-  deleteMovie = id => {
-    API.deleteMovie(id)
-      .then(res => this.loadMovies())
+  deleteBook = id => {
+    API.deleteBook(id)
+      .then(res => this.loadBooks())
       .catch(err => console.log(err));
   };
 
@@ -42,11 +42,11 @@ class Movies extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     if (this.state.title) {
-      API.saveMovie({
+      API.saveBook({
         title: this.state.title,
         synopsis: this.state.synopsis
       })
-        .then(res => this.loadMovies())
+        .then(res => this.loadBooks())
         .catch(err => console.log(err));
     }
   };
@@ -57,7 +57,7 @@ class Movies extends Component {
         <Row>
           <Col size="md-6">
             <Jumbotron>
-              <h1>What Movie Should I Watch?</h1>
+              <h1>Tell Me a Really Good Movie?</h1>
             </Jumbotron>
             <form>
               <Input
@@ -66,11 +66,12 @@ class Movies extends Component {
                 name="title"
                 placeholder="Title (required)"
               />
+
               <TextArea
                 value={this.state.synopsis}
                 onChange={this.handleInputChange}
                 name="synopsis"
-                placeholder="Synopsis"
+                placeholder="Synopsis (Optional)"
               />
               <FormBtn
                 disabled={!(this.state.title)}
@@ -82,23 +83,23 @@ class Movies extends Component {
           </Col>
           <Col size="md-6 sm-12">
             <Jumbotron>
-              <h1>Movies On My List</h1>
+              <h1>List of Movies</h1>
             </Jumbotron>
-            {this.state.Movies.length ? (
+            {this.state.books.length ? (
               <List>
-                {this.state.Movies.map(movie => (
-                  <ListItem key={movie._id}>
-                    <Link to={"/movie/" + movie._id}>
+                {this.state.books.map(book => (
+                  <ListItem key={book._id}>
+                    <Link to={"/books/" + book._id}>
                       <strong>
-                        {movie.title}
+                        {book.title}
                       </strong>
                     </Link>
-                    <DeleteBtn onClick={() => this.deleteMovie(movie._id)} />
+                    <DeleteBtn onClick={() => this.deleteBook(book._id)} />
                   </ListItem>
                 ))}
               </List>
             ) : (
-              <h3>No Results to Display</h3>
+              <h4>←enter your movie</h4>
             )}
           </Col>
         </Row>
@@ -107,4 +108,4 @@ class Movies extends Component {
   }
 }
 
-export default Movies;
+export default Books;
