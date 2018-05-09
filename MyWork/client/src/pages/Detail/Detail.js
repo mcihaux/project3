@@ -20,10 +20,11 @@ class Detail extends Component {
     return (
       <Container fluid>
         <Row>
-          <Col size="md-12">
+          <Col size="md-5">
             <Jumbotron>
               <h1>
                 {this.state.book.title}
+
               </h1>
             </Jumbotron>
           </Col>
@@ -46,6 +47,8 @@ class Detail extends Component {
       </Container>
     );
   }
+
+  <h1>Hello</h1>
 }
 
 export default Detail;
